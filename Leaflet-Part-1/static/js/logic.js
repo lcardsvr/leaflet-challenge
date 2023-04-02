@@ -7,29 +7,16 @@ d3.json(queryUrl).then(function (data) {
     
     let earthquakeData = data.features;
 
-    // let numEQ = earthquakeData.length ;
     
     createFeatures(earthquakeData);
-    // createMap (earthquakeData);
-    createFeatures_02(data.features);
-
-    // console.log(numEQ);
-    // console.log(earthquakeData);
+   
+    someStats(data.features);
 
 
   });
 
 
-function createFeatures_02(data){
-
-
-    // let earthquakes = L.geoJSON(data, {
- 
-    //     onEachFeature: onEachFeature
-    //   });
-    
-    //   // Send our earthquakes layer to the createMap function/
-    //   createMap(earthquakes);
+function someStats(data){
 
 
     let numEQ = data.length ;
@@ -104,7 +91,7 @@ function createFeatures_02(data){
 
     console.log(numEQ);
     // Define a function that we want to run once for each feature in the features array.
-    // Give each feature a popup that describes the place and time of the earthquake.
+    // Give each feature a popup that describes the place, time, Longitude, Latitude and depth of the earthquake.
     function onEachFeature(feature, layer) {
       layer.bindPopup(`<h2>${feature.properties.place}</h2><hr>
       <p>${new Date(feature.properties.time)}</p>
@@ -125,20 +112,20 @@ function createFeatures_02(data){
 	}
 
     	// This function determines the color of the circle based on the depth of the earthquake.
-	function getColor(magnitude) {
-		if (magnitude > 90) {
+	function getColor(depth) {
+		if (depth > 90) {
 		return "#7a0177";
 		}
-		if (magnitude > 70) {
+		if (depth > 70) {
 		return "#c51b8a";
 		}
-		if (magnitude > 50) {
+		if (depth > 50) {
 		return "#f768a1";
 		}
-		if (magnitude > 30) {
+		if (depth > 30) {
 		return "#fa9fb5";
 		}
-		if (magnitude > 10) {
+		if (depth > 10) {
 		return "#fcc5c0";
 		}
 		return "#feebe2";
@@ -150,7 +137,7 @@ function createFeatures_02(data){
 
         pointToLayer: function (feature,latlng){
 
-                    console.log(earthquakeData);
+                    // console.log(earthquakeData);
                     return L.circleMarker(latlng);
         },
 
