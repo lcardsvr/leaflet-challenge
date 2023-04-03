@@ -1,35 +1,35 @@
 // Store our API endpoint as queryUrl.
 let queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
+// Accessing the tectonic plate GeoJSON URL
+let tectonicPUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
+
 // Perform a GET request to the query URL/
 d3.json(queryUrl).then(function (data) {
     // Once we get a response, send the data.features object to the createFeatures function.
     
     let earthquakeData = data.features;
 
-    // let numEQ = earthquakeData.length ;
-    
-    createFeatures(earthquakeData);
-    // createMap (earthquakeData);
-    createFeatures_02(data.features);
-
-    // console.log(numEQ);
-    // console.log(earthquakeData);
+    // Use d3.json to make a call to get our Tectonic Plate geoJSON data.
+    d3.json(tectonicPUrl).then(function(data_02) {
+       console.log(data_02);
+   
+       let tectonicPlatesData = data_02;
 
 
+
+       createFeatures(earthquakeData,tectonicPlatesData);
+   
+       someStats(data.features);
+   
+       
+     });
+
+   
   });
 
 
-function createFeatures_02(data){
-
-
-    // let earthquakes = L.geoJSON(data, {
- 
-    //     onEachFeature: onEachFeature
-    //   });
-    
-    //   // Send our earthquakes layer to the createMap function/
-    //   createMap(earthquakes);
+function someStats(data){
 
 
     let numEQ = data.length ;
@@ -97,14 +97,14 @@ function createFeatures_02(data){
 
 
 
-  function createFeatures(earthquakeData) {
+  function createFeatures(earthquakeData,tectonicPlatesData) {
 
 
     let numEQ = earthquakeData.length ;
 
     console.log(numEQ);
     // Define a function that we want to run once for each feature in the features array.
-    // Give each feature a popup that describes the place and time of the earthquake.
+    // Give each feature a popup that describes the place, time, Longitude, Latitude and depth of the earthquake.
     function onEachFeature(feature, layer) {
       layer.bindPopup(`<h2>${feature.properties.place}</h2><hr>
       <p>${new Date(feature.properties.time)}</p>
@@ -125,20 +125,20 @@ function createFeatures_02(data){
 	}
 
     	// This function determines the color of the circle based on the depth of the earthquake.
-	function getColor(magnitude) {
-		if (magnitude > 90) {
+	function getColor(depth) {
+		if (depth > 90) {
 		return "#7a0177";
 		}
-		if (magnitude > 70) {
+		if (depth > 70) {
 		return "#c51b8a";
 		}
-		if (magnitude > 50) {
+		if (depth > 50) {
 		return "#f768a1";
 		}
-		if (magnitude > 30) {
+		if (depth > 30) {
 		return "#fa9fb5";
 		}
-		if (magnitude > 10) {
+		if (depth > 10) {
 		return "#fcc5c0";
 		}
 		return "#feebe2";
@@ -150,7 +150,7 @@ function createFeatures_02(data){
 
         pointToLayer: function (feature,latlng){
 
-                    console.log(earthquakeData);
+                    // console.log(earthquakeData);
                     return L.circleMarker(latlng);
         },
 
@@ -170,12 +170,20 @@ function createFeatures_02(data){
  
       onEachFeature: onEachFeature
     });
-  
+
+
+    let tectonicPlates =  L.geoJson(tectonicPlatesData, {
+        style: {
+          color: "#7a0177",
+          lineweight: 0.3
+          }
+    })
+
     // Send our earthquakes layer to the createMap function/
-    createMap(earthquakes);
+    createMap(earthquakes,tectonicPlates);
   }
 
-  function createMap(earthquakes) {
+  function createMap(earthquakes,tectonicPlates) {
 
     // Create the base layers.
     let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -194,7 +202,8 @@ function createFeatures_02(data){
   
     // Create an overlay object to hold our overlay.
     let overlayMaps = {
-      Earthquakes: earthquakes
+      "Tectonic Plates":tectonicPlates,
+      "Earthquakes": earthquakes,
     };
   
     // Create our map, giving it the streetmap and earthquakes layers to display on load.
@@ -203,7 +212,7 @@ function createFeatures_02(data){
         -25.27, 73.77
       ],
       zoom: 2,
-      layers: [street, earthquakes]
+      layers: [street, tectonicPlates, earthquakes]
     });
   
     // Create a layer control.
@@ -212,10 +221,6 @@ function createFeatures_02(data){
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
     }).addTo(myMap);
-  
-
- 
-	
 
 
      // Set up the legend.
@@ -248,6 +253,8 @@ function createFeatures_02(data){
 
 
     legend.addTo(myMap);   
+
+
 
 
   }
