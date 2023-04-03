@@ -13,22 +13,21 @@ Part 1: Earthquake Visualisation
 
 Part 2: Gather and Plot Tectonic Plate Data and plot it on top of the Earthquake Visualisation
 
-## Bar Chart
+## Part 1
 
-The bar chart was created by taking a slice and reversing the data that matches a Test Subject ID number. The initial value is the first ID in the Array. The visualization matches the requirement. 
+The data from the last week thorugh the link "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson". Each point has displays the information for each EarthQuake which include Location, Date of occurrence, Magnitude, Latitude, Longitude and depth. The radius of each point relates to the magnitude of each event and the color to the depth. The color pallete used was taken from https://colorbrewer2.org/#type=sequential&scheme=RdPu&n=6
 
-## Bubble Chart
+## Part 2
 
-The bubble chart was created by taking all the sample data that matches a Test Subject ID number. The initial value is the first ID in the Array. The visualization matches the requirement. 
-
-## Metadata and Deployment
-
-Metadata initialises without error. The Metadata updates when a new sample is selected. The App was successfully Deployed to Github Pages.
-
+In addition to the visualisations in Part 1, the tectonic plate information from "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json" was included. 
 
 
 ## Submission
 
-1. Submitted and available in GitHub under https://github.com/lcardsvr/belly-button-challenge
+1. Submitted and available in GitHub under https://github.com/lcardsvr/leaflet-challenge
 
-2. Github Page for submission available under https://lcardsvr.github.io./
+2. Code for Leaflet Part-1 available under https://github.com/lcardsvr/leaflet-challenge/tree/main/Leaflet-Part-1
+
+3. Code for Leaflet Part-2 available under https://github.com/lcardsvr/leaflet-challenge/tree/main/Leaflet-Part-2
+
+4. Github Page for submission available under https://lcardsvr.github.io/leaflet-challenge/ which presents the code related to Leaflet Part 2.
